@@ -5,7 +5,9 @@ import math
 # Constants
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
+ORANGE = (255, 165, 0)
 BLACK = (0, 0, 0)
+GREY = (128, 128, 128)
 SHIP_SIZE = 30
 ASTEROID_SIZE = 40
 BULLET_SIZE = 4
@@ -61,7 +63,7 @@ class Asteroid:
         self.x, self.y = wrap_position((self.x, self.y), width, height)
 
     def draw(self, screen):
-        pygame.draw.circle(screen, WHITE, (int(self.x), int(self.y)), self.size)
+        pygame.draw.circle(screen, GREY, (int(self.x), int(self.y)), self.size)
 
     def get_rect(self):
         return pygame.Rect(self.x - self.size, self.y - self.size, self.size * 2, self.size * 2)
@@ -82,7 +84,7 @@ class Bullet:
         self.lifetime -= 1
 
     def draw(self, screen):
-        pygame.draw.circle(screen, WHITE, (int(self.x), int(self.y)), BULLET_SIZE)
+        pygame.draw.circle(screen, ORANGE, (int(self.x), int(self.y)), BULLET_SIZE)
 
     def is_alive(self):
         return self.lifetime > 0
