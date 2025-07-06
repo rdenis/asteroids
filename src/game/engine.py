@@ -56,14 +56,18 @@ class Asteroid:
         self.dx = dx
         self.dy = dy
         self.size = size
+        self.asteroid_image = pygame.image.load("assets/lilly.png").convert_alpha()
 
     def move(self, width, height):
         self.x += self.dx
         self.y += self.dy
         self.x, self.y = wrap_position((self.x, self.y), width, height)
 
-    def draw(self, screen):
-        pygame.draw.circle(screen, GREY, (int(self.x), int(self.y)), self.size)
+    def draw(self, screen):        
+        # Scale the image to the asteroid's size
+        scaled_img = pygame.transform.scale(self.asteroid_image, (self.size*2, self.size*2))
+        rect = scaled_img.get_rect(center=(self.x, self.y))
+        screen.blit(scaled_img, rect)
 
     def get_rect(self):
         return pygame.Rect(self.x - self.size, self.y - self.size, self.size * 2, self.size * 2)
@@ -105,6 +109,7 @@ class GameEngine:
         self.bullets = []
         self.score = 0
         self.is_running = True
+        self.hit_sound = pygame.mixer.Sound("assets/loud-female-scream-41894.wav")
         self.spawn_asteroids()
         while self.is_running:
             self.handle_events()
@@ -157,6 +162,7 @@ class GameEngine:
                     self.bullets.remove(bullet)
                     self.asteroids.remove(asteroid)
                     self.score += 10
+                    self.hit_sound.play()
                     break
 
         # Respawn asteroids if all destroyed
